@@ -16,6 +16,6 @@ RUN pip install --no-cache-dir -r /project/requirements.txt --quiet
 RUN pip install watchdog==3.0.0 --quiet
 
 EXPOSE 5000
+CMD ["sleep", "infinity"]
 
-CMD [ "python3", "run_dev.py", "--debug=True" ]
 
