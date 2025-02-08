@@ -1,0 +1,21 @@
+FROM python:3.13.2
+ENV FLASK_DEBUG 1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install dependencies
+RUN pip install --upgrade pip
+
+WORKDIR /project
+
+COPY ./project /project
+# RUN chmod +x /project/requirements.t
+RUN pip install --no-cache-dir -r /project/requirements.txt --quiet
+
+# adding dev specific packages - need to recheck requirements to reduce packages if possible
+RUN pip install watchdog==3.0.0 --quiet
+
+EXPOSE 5000
+
+CMD [ "python3", "run_dev.py", "--debug=True" ]
+

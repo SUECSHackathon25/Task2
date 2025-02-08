@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: backend
+    volumes:
+      - ./backend/project:/project/
+    ports:
+      - 8000:5000
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: frontend
+    volumes:
+      - ./frontend/project:/project
+    ports:
+      - 3000:3000
+  db: 
+    build: 
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: database
+    healthcheck:
+        test: ['CMD', 'pg_isready', '-U', 'postgres', '-d', 'postgres']
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+       POSTGRES_USER: postgres # The PostgreSQL user (useful to connect to the database)
+       POSTGRES_PASSWORD: postgres # The PostgreSQL password (useful to connect to the database)
+       POSTGRES_DB: postgres #=valu 
+
+volumes: 
+  database: 
+  
+
+          
+
+      

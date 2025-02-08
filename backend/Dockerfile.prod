@@ -1,0 +1,23 @@
+
+FROM python:3.13.2-alpine
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+# install dependencies
+RUN pip install --upgrade pip
+
+# Install system dependencies
+RUN apk update \
+    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev linux-headers tk
+
+WORKDIR /project
+
+COPY ./project/ /project
+# RUN chmod +x /app/requirements.t
+RUN pip install --no-cache-dir -r /project/requirements.txt --quiet
+
+# prod specific packages
+RUN pip install gunicorn --quiet
+
+EXPOSE 5000
+
+CMD ["gunicorn","--config", "gunicorn_config.py", "--access-logfile", "-", "project:create_app()"]
