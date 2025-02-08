@@ -51,9 +51,12 @@ def import_judges():
     try: 
         # add in xlsx validation if time
         file: FileStorage = request.files["file"]
-        process_judges_file(file)
+        logger.debug(file)
+        process_judges_file(file=file)
         
         return RESTJSONResponse(code=201, content={"message": "File Accept"}).json_resp()
+    except RESTErrorException as e:
+        return e.json_resp()
     except Exception as e:
         logger.error(e)
         return RESTErrorException(500, error="Internal Server Error", message="Failed to upload file", detail=f'{e}').json_resp()

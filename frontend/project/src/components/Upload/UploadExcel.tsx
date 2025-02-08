@@ -36,8 +36,6 @@ const schema = object({
 
             if (value instanceof File) {
                 return value.size <= 5 * 1024 * 1024;  // 5MB
-            } else {
-                console.log('failed check')
             }
             return false;
         }).nullable(),
@@ -59,9 +57,7 @@ export default function UploadExcel({ title, path }: Props) {
 
     const formSubmitHandler: SubmitHandler<FormInputs> = async (data: FormInputs) => {
         if (data.file) {
-            console.log(data.file)
             if (data.file instanceof File) {
-                console.log("Uploaded file:", data.file);
                 const formData = new FormData();
                 formData.append("file", data.file);
         
