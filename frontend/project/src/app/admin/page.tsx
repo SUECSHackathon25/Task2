@@ -10,7 +10,7 @@ export default function AdminHome() {
             <Typography variant='h2'>Configure Judges</Typography>
             
                   
-            <UploadExcel title='upload judges'/>
+            <UploadExcel title='upload judges' path='/api/admin/judges'/>
 
 
         </Box>

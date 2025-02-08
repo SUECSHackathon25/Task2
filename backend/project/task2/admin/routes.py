@@ -1,7 +1,8 @@
-from venv import logger
-from flask import Blueprint, Response, current_app
+from flask import Blueprint, Response, current_app, request
 from json import dumps
+from logging import getLogger
 
+from werkzeug.datastructures.file_storage import FileStorage
 
 from task2.utils.responses import RESTErrorException, RESTJSONResponse
 
@@ -14,6 +15,11 @@ from task2.models.User import User
 
 from task2.database import db
 
+from task2.admin.utils import process_judges_file
+
+
+
+logger = getLogger(__name__)
 
 admin_bp = Blueprint(name='/admin', import_name=__name__, url_prefix='/api/admin')
 
@@ -32,14 +38,29 @@ def setup_application():
                 s.commit()
             
             
-            return RESTJSONResponse(201, {"message": "Application Setup"}).json_resp()
+            return RESTJSONResponse(code=201, content={"message": "Application Setup"}).json_resp()
     except Exception as e: 
+        
         return RESTErrorException(500, error="Internal Server Error", message="database failed to be created", detail=f'{e}').json_resp()
     
     
 @admin_bp.route("/judges", methods=["POST"])
 def import_judges():
-    pass
+    
+    
+    try: 
+        # add in xlsx validation if time
+        file: FileStorage = request.files["file"]
+        process_judges_file(file)
+        
+        return RESTJSONResponse(code=201, content={"message": "File Accept"}).json_resp()
+    except Exception as e:
+        logger.error(e)
+        return RESTErrorException(500, error="Internal Server Error", message="Failed to upload file", detail=f'{e}').json_resp()
+        
+        
+
+
 
 @admin_bp.route("/posters", methods=["POST"])
 def import_posters():
