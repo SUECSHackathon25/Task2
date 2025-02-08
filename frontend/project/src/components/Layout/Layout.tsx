@@ -1,6 +1,6 @@
-import { Box } from "@mui/material"
-import Header from "@/components/Layout/Header"
-import { ReactNode } from "react";
+import { Box } from '@mui/material'
+import Header from '@/components/Layout/Header'
+import { ReactNode } from 'react';
 
 
 type Props = {

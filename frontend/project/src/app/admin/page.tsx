@@ -4,13 +4,13 @@ import UploadExcel from '@/components/Upload/UploadExcel'
 
 export default function AdminHome() {
   return (
-    <Layout pageTitle={"Admin Home Page"}>
+    <Layout pageTitle={'Admin Home Page'}>
 
         <Box>
-            <Typography variant='h2'>Configure Judges</Typography>
+            <Typography paddingBottom={'5%'} variant='h2'>Configure Event</Typography>
             
                   
-            <UploadExcel title='upload judges' path='/api/admin/judges'/>
+            <UploadExcel title='Upload Judges Excel Doc' path='/api/admin/judges'/>
 
 
         </Box>

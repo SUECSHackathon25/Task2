@@ -1,10 +1,10 @@
-"use client";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import axios from "axios";
-import React from "react";
-import { Controller, Form, SubmitHandler, useForm } from "react-hook-form";
-import { InferType, mixed, object } from "yup";
+'use client';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Paper, TextField, Typography } from '@mui/material';
+import axios from 'axios';
+import React from 'react';
+import { Controller, Form, SubmitHandler, useForm } from 'react-hook-form';
+import { InferType, mixed, object } from 'yup';
 
 // Props type
 type Props = {
@@ -19,18 +19,18 @@ type FormInputs = InferType<typeof schema>;
 // Yup schema validation
 const schema = object({
     file: mixed()
-        .required("A file is required")
-        .test("fileFormat", "Only Excel files are allowed", (value) => {
+        .required('A file is required')
+        .test('fileFormat', 'Only Excel files are allowed', (value) => {
             // Ensure value is of type FileList and check file format
             if (value instanceof File) {
                 return (
-                    value.type === "application/vnd.ms-excel" ||
-                    value.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    value.type === 'application/vnd.ms-excel' ||
+                    value.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 );
             }
             return false;
         })
-        .test("fileSize", "File size must be less than 5MB", (value) => {
+        .test('fileSize', 'File size must be less than 5MB', (value) => {
             // Ensure value is of type FileList and check file size
    
 
@@ -59,7 +59,7 @@ export default function UploadExcel({ title, path }: Props) {
         if (data.file) {
             if (data.file instanceof File) {
                 const formData = new FormData();
-                formData.append("file", data.file);
+                formData.append('file', data.file);
         
                 axios.post(path, formData)
                     .then(response => {
@@ -69,7 +69,7 @@ export default function UploadExcel({ title, path }: Props) {
                         console.error(error);
                     });
             } else {
-                console.log("No file selected.");
+                console.log('No file selected.');
             }
             }
    
@@ -80,21 +80,21 @@ export default function UploadExcel({ title, path }: Props) {
     });
 
     return (
-        <Box>
-            <Typography variant="h2">{title}</Typography>
+        <Paper >
+            <Typography paddingTop='2%' variant='h2'>{title}</Typography>
             
             <Form control={control}>
                 <Controller
-                    name="file"
-                    key={"file"}
+                    name='file'
+                    key={'file'}
                     control={control}
                     render={({ fieldState }) => (
                             <TextField
                                 onChange={handleFileChange}
-                                type="file"
-                                variant="outlined"
+                                type='file'
+                                variant='outlined'
                                 fullWidth
-                                margin="normal"
+                                margin='normal'
                                 error={!!fieldState?.error}
                                 helperText={fieldState?.error?.message} // Display validation error
                             />
@@ -103,6 +103,6 @@ export default function UploadExcel({ title, path }: Props) {
                 />
                 <Button onClick={handleSubmit(formSubmitHandler)}>Submit</Button>
             </Form>
-        </Box>
+        </Paper>
     );
 }
