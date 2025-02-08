@@ -21,9 +21,7 @@ services:
       - 3000:3000
   db: 
     restart: unless-stopped
-    build: 
-      context: ./database
-      dockerfile: Dockerfile
+    image: postgres:16.1
     container_name: database
     healthcheck:
         test: ['CMD', 'pg_isready', '-U', 'postgres', '-d', 'postgres']
