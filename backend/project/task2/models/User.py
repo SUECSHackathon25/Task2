@@ -5,6 +5,7 @@ from task2.database import db
 
 
 class User(db.Model):
+    __tablename__ = "app_user"
     id: MappedColumn[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     username: MappedColumn[str] = mapped_column(String(length=200), nullable=False)
     admin: MappedColumn[bool] = mapped_column(Boolean, default=False)
