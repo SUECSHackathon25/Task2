@@ -1,7 +1,6 @@
 'use client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
-import axios from 'axios';
 import React from 'react';
 import { Controller, Form, SubmitHandler, useForm } from 'react-hook-form';
 import { InferType, mixed, object } from 'yup';
@@ -61,18 +60,22 @@ export default function UploadExcel({ title, path }: Props) {
                 const formData = new FormData();
                 formData.append('file', data.file);
         
-
-                axios.post(path, formData)
-                    .then(response => {
-                        console.log(response);
+                fetch(path, {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.json())  // Assuming the response is JSON
+                    .then(data => {
+                        console.log(data);
                     })
                     .catch(error => {
-                        console.error(error);
+                        console.error('Error:', error);
                     });
             } else {
                 console.log('No file selected.');
             }
-            }
+        }
+        
    
     };
 

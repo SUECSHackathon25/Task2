@@ -12,15 +12,6 @@ import { score } from 'types/score';
 export default function ScorePosters() {
   // Define the initial values for each cell in the left column (strings)
 
-
-  // const initialCellValues = [
-  //   ['Test 1', 0],
-  //   ['Test 2', 0],
-  //   ['Test 4', 0],
-  //   ['Test 5', 0],
-  //   ['Test 6', 0],
-  //   ['', 0], // Empty string as a test case
-  // ];
   const { id } = useParams();
 
   useEffect(() => {
@@ -29,6 +20,7 @@ export default function ScorePosters() {
       const data: judge = await res.json()
       setJudgeName(`${data.first_name} ${data.last_name}`)
       setCellValues(data.scores)
+      console.log(data)
 
     }
     fetchPosts()
@@ -36,18 +28,54 @@ export default function ScorePosters() {
 
 
   const [judgeName, setJudgeName] = useState<string>("")
+  const [submitEnabled, setSubmitEnabled] = useState<boolean>(false)
+
   const [cellValues, setCellValues] = useState<score[]>([]);
 
   // Handle button click to set ranking value
   const handleButtonClick = (rank: number, rowIndex: number) => {
     const updatedValues = [...cellValues];
-    updatedValues[rowIndex].id = rank; // Set the ranking in the right column
+    updatedValues[rowIndex].score = rank; // Set the ranking in the right column
     setCellValues(updatedValues);
   };
 
+
+  useEffect(() => {
+    // Check if all scores are not null
+    const allScoresFilled = cellValues.every(score => score.score !== null);
+
+    // Enable button only if all scores are filled
+    setSubmitEnabled(allScoresFilled);
+  }, [cellValues]); // The effect runs whenever the 'scores' state changes
+
+
+
   const handleSubmit = () => {
     // Placeholder for the submit function
-    console.log('Form submitted with values:', cellValues);
+
+    const bodyData = { ...cellValues }
+
+
+    fetch(`/api/judges/${id}/posters`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',  // Tell the server we're sending JSON
+      },
+      body: JSON.stringify(bodyData),  // Convert the object to a JSON string
+    })
+      .then(response => response.json())  // Assuming the response is JSON
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+
+
+
+
   };
 
   return (
@@ -72,10 +100,10 @@ export default function ScorePosters() {
                         {Array.from({ length: 10 }).map((_, index) => (
                           <Button
                             key={index}
-                            variant={row.id === index + 1 ? 'contained' : 'outlined'} // Highlight the selected button
+                            variant={row.score === index + 1 ? 'contained' : 'outlined'} // Highlight the selected button
                             color="primary"
                             onClick={() => handleButtonClick(index + 1, rowIndex)} // Update rank on click
-                            sx={{ margin: '4px' }} // Set width to fit buttons in two rows
+                            sx={{ margin: '0.5%' }} // Set width to fit buttons in two rows
                           >
                             {index + 1}
                           </Button>
@@ -91,7 +119,7 @@ export default function ScorePosters() {
 
         {/* Centered Submit Button */}
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button variant="contained" color="primary" onClick={handleSubmit} disabled={!submitEnabled}>
             Submit All
           </Button>
         </Box>
@@ -100,4 +128,3 @@ export default function ScorePosters() {
 
   )
 }
-
