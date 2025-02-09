@@ -3,7 +3,7 @@ services:
 
   backend:
     restart: unless-stopped
-    # command: ["python", "run_dev.py"]
+    command: ["python", "run_dev.py"]
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
