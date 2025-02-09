@@ -12,7 +12,7 @@ class Scoring(db.Model):
     poster_id: MappedColumn[int] = mapped_column(Integer, ForeignKey(column=Poster.id), nullable=False)
     score : MappedColumn[int] = mapped_column(Integer, nullable=True)
     __table_args__: tuple[CheckConstraint] = (
-        CheckConstraint(sqltext='Score BETWEEN 1 AND 10', name='check_score_range'), 
+        CheckConstraint(sqltext='Score BETWEEN 0 AND 10', name='check_score_range'), 
     ) 
     
     judge: Relationship[Judge] = relationship(argument=Judge, backref='judge')
