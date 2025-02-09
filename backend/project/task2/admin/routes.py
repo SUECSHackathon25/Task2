@@ -80,3 +80,22 @@ def import_posters():
             s.query(Poster).delete()
         return RESTErrorException(500, error="Internal Server Error", message="Failed to upload posters file", detail=f'{e}').json_resp()
         
+
+
+@admin_bp.route("/admin/results", methods=["POST"])
+def get_results():
+    
+    
+    try: 
+        # add in xlsx validation if time
+        file: FileStorage = request.files["file"]
+        process_judges_file(file=file)
+        
+        return RESTJSONResponse(code=201, content={"message": "File Accepted"}).json_resp()
+    except RESTErrorException as e:
+        return e.json_resp()
+    except Exception as e:
+        logger.error(e)
+        return RESTErrorException(500, error="Internal Server Error", message="Failed to upload judges file", detail=f'{e}').json_resp()
+        
+        

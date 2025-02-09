@@ -166,3 +166,8 @@ def score_conflict_check(s: Session):
         bad_poster_ids = [poster_id for poster_id in result]
         
         raise RESTErrorException(code=400, error="Bad Request", message="Bad Judge Assignments", detail=f"Following Posters have invalid judge assignments: {bad_poster_ids}" ) 
+
+
+def get_results():
+    
+    return

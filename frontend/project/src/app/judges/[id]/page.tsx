@@ -53,18 +53,20 @@ export default function ScorePosters() {
   const handleSubmit = () => {
     // Placeholder for the submit function
 
-    const bodyData = { ...cellValues }
 
-
+    const body = {
+      scores: cellValues
+    };
     fetch(`/api/judges/${id}/posters`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',  // Tell the server we're sending JSON
       },
-      body: JSON.stringify(bodyData),  // Convert the object to a JSON string
+      body: JSON.stringify(body),  // Convert the object to a JSON string
     })
       .then(response => response.json())  // Assuming the response is JSON
       .then(data => {
+        setSubmitEnabled(false)
         console.log(data);
       })
       .catch(error => {
