@@ -17,10 +17,12 @@ export default function ScorePosters() {
   useEffect(() => {
     async function fetchPosts() {
       const res = await fetch(`/api/judges/${id}/posters`)
+      if (!res.ok) {
+        throw new Error('Error fetching judges posters');
+    }
       const data: judge = await res.json()
       setJudgeName(`${data.first_name} ${data.last_name}`)
       setCellValues(data.scores)
-      console.log(data)
 
     }
     fetchPosts()

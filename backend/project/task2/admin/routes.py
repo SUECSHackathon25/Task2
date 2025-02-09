@@ -1,6 +1,7 @@
 from flask import Blueprint, current_app, request, send_file
 from logging import getLogger
 
+from sqlalchemy import false, inspect
 from werkzeug.datastructures.file_storage import FileStorage
 
 from task2.utils.responses import RESTErrorException, RESTJSONResponse
@@ -23,10 +24,29 @@ logger = getLogger(__name__)
 admin_bp = Blueprint(name='admin', import_name=__name__, url_prefix='/api/admin')
 
 
+
+@admin_bp.route("/setup", methods=["GET"])
+def check_if_application_init(): 
+    try: 
+        inspector = inspect(db.engine)
+
+        tables = inspector.get_table_names()
+        
+        if tables: 
+            return RESTJSONResponse(code=200, content={"message": "Application Setup"}).json_resp()
+        else: 
+            return RESTErrorException(404, error="Not Found", message="No tables in the database, must be created").json_resp()
+    except Exception as e: 
+        logger.debug(e)
+        return RESTErrorException(500, error="Internal Server Error", message="Database check failed", detail=f'{e}').json_resp()
+    
+    
+
+
+
 @admin_bp.route("/setup", methods=["POST"])
 def setup_application(): 
     try: 
-        #note to self, cancel if database tables exist etc
         logger.info("Creating tables that do not exist")
         with current_app.app_context():
             db.create_all()
@@ -74,8 +94,6 @@ def import_posters():
     except RESTErrorException as e:
         return e.json_resp()
     except Exception as e:
-        logger.debug("Error Here")
-        logger.error(e)
         with db.session() as s:
             s.query(Poster).delete()
         return RESTErrorException(500, error="Internal Server Error", message="Failed to upload posters file", detail=f'{e}').json_resp()

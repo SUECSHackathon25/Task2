@@ -41,7 +41,6 @@ def process_judges_file(file: FileStorage):
     
         if 'judge' not in df.columns:
             raise RESTErrorException(code=422, error="Unprocessable Entity", message="Missing Column name", detail="Missing excel column 'judge'. NOTE IS CASE SENSITIVE" )     
-
         if 'judge firstname' not in df.columns:
             raise RESTErrorException(code=422, error="Unprocessable Entity", message="Missing Column name", detail="Missing excel column 'judge firstname'. NOTE IS CASE SENSITIVE" )     
         if 'judge lastname' not in df.columns:
@@ -58,9 +57,9 @@ def process_judges_file(file: FileStorage):
                 s.add(user)
                 s.commit()
                 logger.info(f"User created for judge {row['judge firstname']} {row['judge lastname']}")
-            department: Department = s.query(Department).filter_by(name=row["Department"]).first()
+            department: Department = s.query(Department).filter_by(name=row["department"]).first()
             if not department:
-                department = Department(name=row["Department"])
+                department = Department(name=row["department"])
                 s.add(department)
                 s.commit()
                 logger.info(f"Created department: {department}")
@@ -134,7 +133,7 @@ def process_posters_file(file: FileStorage):
                 logger.info(msg=f"Created program: {program}")
             
             
-            poster = Poster(id=row["Poster #"], title=row['title'],abstract=row['abstract'], advisor=advisor, program=program)
+            poster = Poster(id=row["poster #"], title=row['title'],abstract=row['abstract'], advisor=advisor, program=program)
             s.add(poster)
             s.commit()
             for judge in [judge1, judge2]:
