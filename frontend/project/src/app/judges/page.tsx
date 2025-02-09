@@ -1,4 +1,5 @@
 import Layout from '@/components/Layout/Layout'
+import { Box } from '@mui/material';
 
 export default async function Judges() {
 
@@ -11,13 +12,12 @@ export default async function Judges() {
     } catch (error) {
       console.error('Error:', error);
     }
-  
 
- 
   return (
     <Layout pageTitle={'Judges'}>
-
-        List of judges here
+      <Box paddingTop={'2%'}>
+      List of judges here
+      </Box>
 
       
 

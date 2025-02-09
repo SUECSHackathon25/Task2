@@ -13,6 +13,7 @@ class Poster(db.Model):
     
     advisor: Relationship[Judge] = relationship(argument=Judge, backref='advisor')
     program: Relationship[Program] = relationship(argument=Program, backref='program')
+    scores = relationship('Score', back_populates='poster')
 
-    
+
 # Title Abstract Advisor First Advisor Last Program

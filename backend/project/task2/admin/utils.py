@@ -11,7 +11,7 @@ from task2.models.Poster import Poster
 from task2.models.Department import Department
 from task2.models.Judge import Judge
 from task2.models.User import User
-from task2.models.Scoring import Scoring
+from task2.models.Score import Score
 
 
 from task2.utils.responses import RESTErrorException
@@ -29,7 +29,7 @@ def process_judges_file(file: FileStorage):
         '''
         delete old judges out of system first 
         '''
-        s.query(Scoring).delete()
+        s.query(Score).delete()
         s.query(Poster).delete()
         s.query(Judge).delete()
         s.commit()
@@ -72,7 +72,7 @@ def process_posters_file(file: FileStorage):
         
         if not judges:
             raise RESTErrorException(code=422, error="Unprocessable Entity", message="No Judges in Database", detail="Cannot upload posters before judges")
-        s.query(Scoring).delete()
+        s.query(Score).delete()
         s.query(Poster).delete()
         s.commit()
         logger.info(msg="Deleting old posters out of database")
@@ -132,14 +132,14 @@ def process_posters_file(file: FileStorage):
             for judge in [judge1, judge2]:
                 assign_judge(poster=poster, judge=judge, s=s)
 
-            scoring_conflict_check(s)
+            score_conflict_check(s)
     
             
             
             
 def assign_judge(poster: Poster, judge: Judge, s: Session):
     
-    existing_scores: List[Scoring] = s.query(Scoring).filter_by(poster=poster).all()
+    existing_scores: List[Score] = s.query(Score).filter_by(poster=poster).all()
     
     if len(existing_scores) > 2:
         raise RESTErrorException(code=400, error="Bad Request", message="Too many judges", detail=f"Too many judges assigned to Poster #{poster.id}" ) 
@@ -147,19 +147,19 @@ def assign_judge(poster: Poster, judge: Judge, s: Session):
         raise RESTErrorException(code=409, error="Conflict", message="Conflict", detail=f"Judges of Poster #{poster.id} matching" )     
     else: 
         # add in score
-        score = Scoring(poster=poster, judge=judge)
+        score = Score(poster=poster, judge=judge)
         
         s.add(score)
         s.commit()        
         
     
             
-def scoring_conflict_check(s: Session): 
+def score_conflict_check(s: Session): 
     result = s.query(
-        Scoring.poster_id,
-        func.count(func.distinct(Scoring.judge_id)).label('distinct_judges')
-    ).group_by(Scoring.poster_id).having(
-        func.count(func.distinct(Scoring.judge_id)) != 2  # Filter posters that don't have exactly 2 distinct judges
+        Score.poster_id,
+        func.count(func.distinct(Score.judge_id)).label('distinct_judges')
+    ).group_by(Score.poster_id).having(
+        func.count(func.distinct(Score.judge_id)) != 2  # Filter posters that don't have exactly 2 distinct judges
     ).all()
     
     if result != []:

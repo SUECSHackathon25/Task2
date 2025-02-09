@@ -9,7 +9,7 @@ from task2.models.Department import Department
 from task2.models.Judge import Judge 
 from task2.models.Poster import Poster 
 from task2.models.Program import Program 
-from task2.models.Scoring import Scoring 
+from task2.models.Score import Score 
 from task2.models.User import User
 
 from task2.database import db
