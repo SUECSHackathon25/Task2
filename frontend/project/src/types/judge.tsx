@@ -1,4 +1,4 @@
-import { score } from "./scores";
+import { score } from "./score";
 
 export type judge = {
     id: number;
