@@ -6,14 +6,18 @@ export default function AdminHome() {
   return (
     <Layout pageTitle={'Admin Home Page'}>
 
-        <Box>
-            <Typography paddingBottom={'5%'} variant='h2'>Configure Event</Typography>
+        <Box paddingBottom={'2%'}>
+            <Typography  variant='h2'>Configure Event</Typography>
             
                   
             <UploadExcel title='Upload Judges Excel Doc' path='/api/admin/judges'/>
 
+            <UploadExcel title='Upload Posters Excel Doc' path='/api/admin/posters'/>
+
 
         </Box>
+
+      
 
     </Layout>
   

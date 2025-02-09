@@ -1,6 +1,6 @@
 'use client';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React from 'react';
 import { Controller, Form, SubmitHandler, useForm } from 'react-hook-form';
@@ -61,6 +61,7 @@ export default function UploadExcel({ title, path }: Props) {
                 const formData = new FormData();
                 formData.append('file', data.file);
         
+
                 axios.post(path, formData)
                     .then(response => {
                         console.log(response);
@@ -80,8 +81,9 @@ export default function UploadExcel({ title, path }: Props) {
     });
 
     return (
-        <Paper >
-            <Typography paddingTop='2%' variant='h2'>{title}</Typography>
+        <Box paddingBlock={'2%'}>
+        <Paper>
+            <Typography paddingTop='2%' variant='subtitle1'>{title}</Typography>
             
             <Form control={control}>
                 <Controller
@@ -104,5 +106,7 @@ export default function UploadExcel({ title, path }: Props) {
                 <Button onClick={handleSubmit(formSubmitHandler)}>Submit</Button>
             </Form>
         </Paper>
+        </Box>
+
     );
 }
