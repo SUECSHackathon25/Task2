@@ -1,9 +1,7 @@
-import os
 from flask import Flask
 from psycopg2 import OperationalError
 from sqlalchemy import text
 from werkzeug.exceptions import HTTPException
-from json import dumps
 from logging import getLogger
 
 
@@ -71,6 +69,8 @@ def create_app():
     '''
     
     from task2.admin.routes import admin_bp
+    from task2.judges.routes import judge_bp
     app.register_blueprint(blueprint=admin_bp)
+    app.register_blueprint(blueprint=judge_bp)
     
     return app

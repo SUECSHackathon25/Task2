@@ -1,5 +1,5 @@
 from sqlalchemy.orm import mapped_column, relationship, Relationship
-from sqlalchemy import Integer, String, CheckConstraint, ForeignKey
+from sqlalchemy import Integer, CheckConstraint, ForeignKey
 from sqlalchemy.orm.properties import MappedColumn
 from task2.database import db
 from task2.models.Poster import Poster

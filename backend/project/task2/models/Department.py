@@ -1,4 +1,4 @@
-from sqlalchemy.orm import mapped_column, relationship, Session
+from sqlalchemy.orm import mapped_column
 from sqlalchemy import Integer, String
 from sqlalchemy.orm.properties import MappedColumn
 from task2.database import db
