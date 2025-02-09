@@ -46,25 +46,22 @@ export default function ScorePosters() {
 
     // Enable button only if all scores are filled
     setSubmitEnabled(allScoresFilled);
-  }, [cellValues]); // The effect runs whenever the 'scores' state changes
+  }, [cellValues]);
 
 
 
   const handleSubmit = () => {
-    // Placeholder for the submit function
-
-
     const body = {
       scores: cellValues
     };
     fetch(`/api/judges/${id}/posters`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',  // Tell the server we're sending JSON
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),  // Convert the object to a JSON string
+      body: JSON.stringify(body),
     })
-      .then(response => response.json())  // Assuming the response is JSON
+      .then(response => response.json())  
       .then(data => {
         setSubmitEnabled(false)
         console.log(data);
@@ -72,11 +69,6 @@ export default function ScorePosters() {
       .catch(error => {
         console.error('Error:', error);
       });
-
-
-
-
-
 
   };
 

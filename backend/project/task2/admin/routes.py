@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, request
+from flask import Blueprint, current_app, request, send_file
 from logging import getLogger
 
 from werkzeug.datastructures.file_storage import FileStorage
@@ -14,7 +14,7 @@ from task2.models.User import User
 
 from task2.database import db
 
-from task2.admin.utils import process_judges_file, process_posters_file
+from task2.admin.utils import process_judges_file, process_posters_file, process_results
 
 
 
@@ -82,16 +82,13 @@ def import_posters():
         
 
 
-@admin_bp.route("/admin/results", methods=["POST"])
+@admin_bp.route("/results", methods=["GET"])
 def get_results():
     
     
-    try: 
-        # add in xlsx validation if time
-        file: FileStorage = request.files["file"]
-        process_judges_file(file=file)
-        
-        return RESTJSONResponse(code=201, content={"message": "File Accepted"}).json_resp()
+    try:   
+        file = process_results()
+        return send_file(file,as_attachment=True, download_name="results.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")    
     except RESTErrorException as e:
         return e.json_resp()
     except Exception as e:

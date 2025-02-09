@@ -9,7 +9,7 @@ from config import App
 from task2.database import db, ma
 from task2.utils.responses import RESTErrorException, RESTJSONResponse
 
-
+from flask_cors import CORS
 
 
 logger = getLogger(__name__)
@@ -25,7 +25,7 @@ def create_app():
     db.init_app(app=app)
     ma.init_app(app=app)
 
-
+    CORS(app)
     # healthcheck, so only internal    
     @app.route('/healthcheck')
     def healthcheck():
