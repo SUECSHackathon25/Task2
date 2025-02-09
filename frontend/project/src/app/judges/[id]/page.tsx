@@ -4,23 +4,23 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper
 import Layout from '@/components/Layout/Layout';
 import { useParams } from 'next/navigation';
 import { judge } from 'types/judge';
-import { score } from 'types/scores';
+import { score } from 'types/score';
 
 
 
 
-export default function TestTable() {
+export default function ScorePosters() {
   // Define the initial values for each cell in the left column (strings)
 
 
-  const initialCellValues = [
-    ['Test 1', 0],
-    ['Test 2', 0],
-    ['Test 4', 0],
-    ['Test 5', 0],
-    ['Test 6', 0],
-    ['', 0], // Empty string as a test case
-  ];
+  // const initialCellValues = [
+  //   ['Test 1', 0],
+  //   ['Test 2', 0],
+  //   ['Test 4', 0],
+  //   ['Test 5', 0],
+  //   ['Test 6', 0],
+  //   ['', 0], // Empty string as a test case
+  // ];
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function TestTable() {
       const res = await fetch(`/api/judges/${id}/posters`)
       const data: judge = await res.json()
       setJudgeName(`${data.first_name} ${data.last_name}`)
-      
+      setCellValues(data.scores)
 
     }
     fetchPosts()
@@ -36,12 +36,12 @@ export default function TestTable() {
 
 
   const [judgeName, setJudgeName] = useState<string>("")
-  const [cellValues, setCellValues] = useState(initialCellValues);
+  const [cellValues, setCellValues] = useState<score[]>([]);
 
   // Handle button click to set ranking value
   const handleButtonClick = (rank: number, rowIndex: number) => {
     const updatedValues = [...cellValues];
-    updatedValues[rowIndex][1] = rank; // Set the ranking in the right column
+    updatedValues[rowIndex].id = rank; // Set the ranking in the right column
     setCellValues(updatedValues);
   };
 
@@ -64,15 +64,15 @@ export default function TestTable() {
             <TableBody>
               {cellValues.map((row, rowIndex) => (
                 <TableRow key={rowIndex}>
-                  <TableCell>{row[0]}</TableCell>
+                  <TableCell>{row.poster.title}</TableCell>
                   <TableCell>
-                    {row[0] !== "" && ( // Only show buttons if the left-hand cell is not an empty string
+                    {row.poster.title !== "" && ( // Only show buttons if the left-hand cell is not an empty string
                       <Box display="flex" flexWrap="wrap" justifyContent="center">
                         {/* Render buttons for selecting rank 1 to 10 in two rows */}
                         {Array.from({ length: 10 }).map((_, index) => (
                           <Button
                             key={index}
-                            variant={row[1] === index + 1 ? 'contained' : 'outlined'} // Highlight the selected button
+                            variant={row.id === index + 1 ? 'contained' : 'outlined'} // Highlight the selected button
                             color="primary"
                             onClick={() => handleButtonClick(index + 1, rowIndex)} // Update rank on click
                             sx={{ margin: '4px' }} // Set width to fit buttons in two rows
