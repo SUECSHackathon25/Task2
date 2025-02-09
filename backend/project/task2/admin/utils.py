@@ -1,4 +1,5 @@
 import io
+import random
 from typing import List
 import pandas as pd
 from logging import getLogger
@@ -17,6 +18,7 @@ from task2.models.Department import Department
 from task2.models.Judge import Judge
 from task2.models.User import User
 from task2.models.Score import Score
+from task2.utils.helpers import evalute_env_bool
 
 
 from task2.utils.responses import RESTErrorException
@@ -191,7 +193,11 @@ def process_results():
                 if score.score:  #wont cause Nan if null
                     row_data[score.judge_id] = int(score.score)
             df = pd.concat([df, row_data.to_frame().T], ignore_index=True)
-        logger.debug(df)
+
+        if evalute_env_bool("GENERATE_RANDOM", "False"):
+            df = df.applymap(lambda x: random.randint(1, 10) if x == 0 else x)
+
+
         file_stream = io.BytesIO()
         df.to_excel(file_stream, index=False, engine='openpyxl')  # Write to the byte stream
         file_stream.seek(0)

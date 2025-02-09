@@ -3,7 +3,7 @@ services:
 
   backend:
     restart: unless-stopped
-    command: ["python", "run_dev.py"]
+    # command: ["python", "run_dev.py"]
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -12,6 +12,8 @@ services:
       - ./backend/project:/project/
     ports:
       - 8000:5000
+    environment:
+      - GENERATE_RANDOM=True
     networks:
       - internal_network
   frontend:
