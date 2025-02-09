@@ -6,9 +6,9 @@ from task2.models.Program import Program
 
 class Poster(db.Model):
     id: MappedColumn[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
-    title: MappedColumn[str] = mapped_column(String(length=200), nullable=False)
-    abstract: MappedColumn[str] = mapped_column(String(length=500), nullable=False)
-    advisor_id: MappedColumn[int] = mapped_column(Integer, ForeignKey(column=Judge.id), nullable=False)
+    title: MappedColumn[str] = mapped_column(String(length=400), nullable=False)
+    abstract: MappedColumn[str] = mapped_column(String(length=5000), nullable=False)
+    advisor_id: MappedColumn[int] = mapped_column(Integer, ForeignKey(column=Judge.id), nullable=True)
     program_id: MappedColumn[int] = mapped_column(Integer, ForeignKey(column=Program.id), nullable=False)
     
     advisor: Relationship[Judge] = relationship(argument=Judge, backref='advisor')
