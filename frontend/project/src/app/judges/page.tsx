@@ -13,8 +13,18 @@ export default function Judges() {
   useEffect(() => {
     async function fetchPosts() {
       const res = await fetch(`/api/judges`)
-      const data: judge[] = await res.json()
-      setJudgesData(data)
+
+
+      if (!res.ok) {
+        alert("Fetching judges")
+        throw new Error('Error downloading the Excel file');
+      } else {
+
+        const data: judge[] = await res.json()
+        setJudgesData(data)
+      }
+
+
 
     }
     fetchPosts()

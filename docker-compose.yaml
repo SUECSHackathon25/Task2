@@ -3,6 +3,7 @@ services:
 
   backend:
     restart: unless-stopped
+    command: ["python", "run_dev.py"]
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -36,9 +37,9 @@ services:
     ports:
       - 5432:5432
     environment:
-       POSTGRES_USER: postgres # The PostgreSQL user (useful to connect to the database)
-       POSTGRES_PASSWORD: postgres # The PostgreSQL password (useful to connect to the database)
-       POSTGRES_DB: postgres #=valu 
+       POSTGRES_USER: postgres # SET USING ENV FILE IN PROD
+       POSTGRES_PASSWORD: postgres # SET USING ENV FILE IN PROD
+       POSTGRES_DB: postgres # SET USING ENV FILE IN PROD
     networks:
       - internal_network
 volumes: 

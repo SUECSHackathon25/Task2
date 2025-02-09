@@ -32,9 +32,12 @@ export default function Page() {
     })
       .then(response => response.json())  
       .then(() => {
+            alert("database successfully set up!")
             setDBExists(true)
       })
       .catch(error => {
+        alert("Error setting up database")
+
         console.error('Error:', error);
       });
 

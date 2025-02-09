@@ -18,6 +18,7 @@ export default function ScorePosters() {
     async function fetchPosts() {
       const res = await fetch(`/api/judges/${id}/posters`)
       if (!res.ok) {
+        alert("Error fetching this judges posters!")
         throw new Error('Error fetching judges posters');
     }
       const data: judge = await res.json()
@@ -67,9 +68,12 @@ export default function ScorePosters() {
       .then(response => response.json())  
       .then(data => {
         setSubmitEnabled(false)
+        alert("Scores submitted!")
         console.log(data);
       })
       .catch(error => {
+        alert("Scores failed to update!")
+
         console.error('Error:', error);
       });
 

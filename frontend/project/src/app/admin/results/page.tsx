@@ -9,16 +9,17 @@ export default function GetResults() {
   const downloadData = async () => {
   
     try {
-        const response = await fetch('/api/admin/results', {
+        const resp = await fetch('/api/admin/results', {
             method: 'GET',
         });
 
-        if (!response.ok) {
+        if (!resp.ok) {
+            alert("Error download excel file")
             throw new Error('Error downloading the Excel file');
         }
 
         // Get the response as a Blob (binary data)
-        const blob = await response.blob();
+        const blob = await resp.blob();
 
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);

@@ -64,13 +64,20 @@ export default function UploadExcel({ title, path }: Props) {
                     method: 'POST',
                     body: formData,
                 })
-                    .then(response => response.json())  // Assuming the response is JSON
-                    .then(data => {
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                .then(response => {
+                    if (!response.ok) { // Check if the response status is not in the 2xx range
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json(); // Assuming the response is JSON
+                })
+                .then(data => {
+                    alert("Excel document uploaded and processed!");
+                    console.log(data);
+                })
+                .catch(error => {
+                    alert("Failed to upload Excel document");
+                    console.error('Error:', error);
+                });
             } else {
                 console.log('No file selected.');
             }
