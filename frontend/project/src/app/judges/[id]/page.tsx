@@ -46,11 +46,12 @@ export default function ScorePosters() {
 
     // Enable button only if all scores are filled
     setSubmitEnabled(allScoresFilled);
-  }, [cellValues]);
+  }, [cellValues]); // The effect runs whenever the 'scores' state changes
 
 
 
   const handleSubmit = () => {
+
     const body = {
       scores: cellValues
     };
